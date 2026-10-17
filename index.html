@@ -392,7 +392,7 @@
     .status-crit { color: var(--rose); }
 
     .canvas-box {
-      height: 300px;
+      height: 310px;
       width: 100%;
       position: relative;
     }
@@ -537,7 +537,7 @@
       <div class="control-item" id="ctrlNut" hidden>
         <div class="control-top">
           <label for="nutSlider">Carga Externa de Azoto (DIN)</label>
-          <span class="control-val" id="nutVal">1.0x</span>
+          <span class="control-val" id="nutVal">1.00x</span>
         </div>
         <p class="control-desc">Fator de carga antropogénica (escorrência agrícola e efluentes urbanos).</p>
         <input type="range" id="nutSlider" min="0.5" max="3.0" step="0.25" value="1.0" />
@@ -550,7 +550,7 @@
         <div class="metric-chip" id="kpiBoxClam">
           <div class="metric-title">Peso Final (1 Indivíduo)</div>
           <div class="metric-val" id="kpiClam">15.8 g</div>
-          <div class="metric-status status-ok" id="kpiClamStatus">Comprimento: ~35 mm</div>
+          <div class="metric-status status-ok" id="kpiClamStatus">Concha: ~35 mm</div>
         </div>
 
         <div class="metric-chip" id="kpiBoxFood" hidden>
@@ -625,21 +625,21 @@
       1: {
         badge: "Nível 1 de 4 • Modelo Bioenergético Individual (DEB — Kooijman, 2000)",
         title: "Crescimento anual de 1 indivíduo de amêijoa-boa (Ruditapes decussatus)",
-        question: "Simulação de <strong>1 único indivíduo</strong> desde juvenil de sementeira (<strong>3.5 g</strong>, ~22 mm) ao longo de 365 dias sob disponibilidade alimentar não limitante. Aumente a <strong>Anomalia Térmica</strong> para observar a depressão estival quando a temperatura intertidal excede o limiar térmico superior (26.8 °C; Sobral &amp; Widdows, 1997).",
+        question: "Simulação de <strong>1 único indivíduo</strong> desde juvenil de sementeira (<strong>3.5 g</strong>, ~22 mm) ao longo de 365 dias sob disponibilidade alimentar não limitante. As linhas tracejadas indicam o calibre comercial mínimo (12 g / 32 mm) e ótimo (16 g / 35 mm). Aumente a <strong>Anomalia Térmica</strong> para observar quando o indivíduo deixa de atingir o peso comercial.",
         eq: 'dW/dt = Assimilação(<span class="focus-term">T</span>) − Manutenção(<span class="focus-term">T</span>)  [1 indivíduo, g]',
         nextLabel: "Avançar para Nível 2: Hidrodinâmica e Maré →"
       },
       2: {
         badge: "Nível 2 de 4 • Acoplamento Físico-Biológico (Prisma de Maré e Microfitobentos)",
         title: "Crescimento individual num viveiro da Ria Formosa: renovação hídrica vs. densidade",
-        question: "A Ria Formosa troca 50% a 75% do volume de água em cada maré semidiurna e ressuspende diatomáceas bênticas (<strong>microfitobentos — MPB</strong>). Por isso, em setores bem renovados (<strong>τ = 1.5 dias</strong>) a depleção de seston é reduzida (~7%). Compare com um canal interno confinado (<strong>τ > 7 dias</strong>) sob elevada densidade.",
+        question: "A Ria Formosa troca 50% a 75% do volume de água em cada maré semidiurna e ressuspende diatomáceas bênticas (<strong>microfitobentos — MPB</strong>). Compare no gráfico a distância face às linhas de <strong>peso comercial (12 g e 16 g)</strong> num setor bem renovado (<strong>τ = 1.5 dias</strong>) vs. num canal interno confinado (<strong>τ > 7 dias</strong>).",
         eq: 'Seston = Fito_Oceano(<span class="focus-term">τ</span>) + <span class="focus-term">MPB</span> − Filtração(<span class="focus-term">Densidade</span>)',
         nextLabel: "Avançar para Nível 3: Biomassa e Ostreicultura →"
       },
       3: {
         badge: "Nível 3 de 4 • Escala Populacional e Interação Interespecífica (kg/m²)",
         title: "Biomassa total por unidade de área (kg/m²): R. decussatus vs. Magallana gigas",
-        question: "Passamos da escala de 1 indivíduo (g) para a <strong>biomassa populacional no canal (kg/m² = Densidade × Peso Individual)</strong>. Com a densidade de <em>M. gigas</em> em <strong>0 ind/m²</strong>, a sua biomassa é nula (0.0 kg/m²). Aumente a densidade de ostras para avaliar a partilha trófica em função do tempo de residência.",
+        question: "Passamos da escala de 1 indivíduo (g) para a <strong>biomassa populacional no canal (kg/m² = Densidade × Peso Individual)</strong>. As linhas tracejadas indicam a <strong>meta de colheita comercial por m²</strong> (para 12 g/amêijoa e 75 g/ostra). Com <em>M. gigas</em> em <strong>0 ind/m²</strong>, a sua biomassa é nula (0.0 kg/m²).",
         eq: 'Biomassa (kg/m²) = <span class="focus-term">Densidade (ind/m²) × Peso_Individual (g) / 1000</span>',
         nextLabel: "Avançar para Nível 4: Biodeposição e Zostera →"
       },
@@ -682,7 +682,6 @@
       const oysterDens = step >= 3 ? p.oyster : 0;
       const nutFactor = step >= 4 ? p.nut : 1.0;
 
-      // Pesos iniciais realistas (sementeira comercial na Ria Formosa)
       let wClam = 3.5;      // 1 juvenil de R. decussatus: 3.5 g (~22 mm comprimento de concha)
       let wClamIdeal = 3.5; // Referência sem depleção trófica local
       let wOyster = 10.0;   // 1 juvenil de M. gigas: 10.0 g (~40 mm)
@@ -708,7 +707,6 @@
         const T_intertidal = T_water + (seasonalPhase > 0 ? 2.1 * seasonalPhase : 0) + (tau > 5 ? 0.6 : 0);
         const light = 0.68 + 0.32 * Math.sin(((d - 80) / 365) * 2 * Math.PI);
 
-        // Clorofila costeira + Microfitobentos ressuspenso (Brito et al., Newton & Mudge)
         const chl_ocean = 2.2 + 1.8 * Math.max(0, Math.sin(((d - 75) / 365) * 2 * Math.PI));
         const mpbResuspended = 1.55 * light * (1.0 + 0.35 / Math.sqrt(tau));
         const sIdeal = chl_ocean + mpbResuspended;
@@ -728,22 +726,18 @@
             dailyDepletion = totalGrazing / (totalGrazing + tidalFlushRate + muPhyto + 0.85);
           }
 
-          // O alimento disponível no viveiro é monotónico e nunca superior à fronteira ideal
           const availableSeston = sIdeal * (1.0 - 0.65 * dailyDepletion);
 
-          // Crescimento individual de 1 amêijoa no viveiro (g)
           const fFoodClam = availableSeston / (availableSeston + 1.15);
           const maintClam = 0.0068 * Math.exp(0.075 * (T_intertidal - 20)) * Math.pow(wClam, 0.75);
           const assimClam = 0.0255 * fFoodClam * tfClam * Math.pow(wClam, 0.67);
           wClam = Math.max(1.0, wClam + (assimClam - maintClam) * dt);
 
-          // Crescimento individual de 1 amêijoa sem depleção local (g)
           const fFoodIdeal = sIdeal / (sIdeal + 1.15);
           const maintIdeal = 0.0068 * Math.exp(0.075 * (T_intertidal - 20)) * Math.pow(wClamIdeal, 0.75);
           const assimIdeal = 0.0255 * fFoodIdeal * tfClam * Math.pow(wClamIdeal, 0.67);
           wClamIdeal = Math.max(1.0, wClamIdeal + (assimIdeal - maintIdeal) * dt);
 
-          // Crescimento individual de 1 ostra (g)
           if (oysterDens > 0) {
             const fFoodOyster = availableSeston / (availableSeston + 1.05);
             const maintOyster = 0.0065 * Math.exp(0.055 * (T_water - 20)) * Math.pow(wOyster, 0.75);
@@ -753,7 +747,6 @@
             wOyster = 0;
           }
 
-          // Nível 4: Dinâmica bentónica (Biodepósitos + NH4+ -> Ulva vs. Zostera noltei)
           if (step === 4) {
             const biodepositionLoad = ((clamDens * 0.0006) + (oysterDens * 0.0025)) * (tau / 3.0);
             const dinEffective = (4.0 * nutFactor) + biodepositionLoad * 1.8;
@@ -786,8 +779,8 @@
         series.bUlva.push(bUlva);
       }
 
-      // Relação alométrica peso-comprimento para Ruditapes decussatus no Algarve (Gaspar et al., 2001)
       const shellLengthMm = Math.round(14.5 * Math.pow(wClam, 0.32));
+      const oysterLengthMm = wOyster > 0 ? Math.round(18.5 * Math.pow(wOyster, 0.34)) : 0;
 
       return {
         series,
@@ -795,6 +788,7 @@
         finalClamIdeal: wClamIdeal,
         shellLengthMm,
         finalOyster: wOyster,
+        oysterLengthMm,
         finalBiomClamKg: (clamDens * wClam) / 1000.0,
         finalBiomOysterKg: (oysterDens * wOyster) / 1000.0,
         depletionPct: Math.min(65, Math.round((summerDepletionSum / summerDays) * 100)),
@@ -805,9 +799,33 @@
     }
 
     // ============================================================================
-    // 4. RENDERIZAÇÃO GRÁFICA E ATUALIZAÇÃO DE INTERFACE
+    // 4. RENDERIZAÇÃO GRÁFICA COM REFERÊNCIAS COMERCIAIS EM TODOS OS NÍVEIS
     // ============================================================================
-    function drawChart(step, out) {
+    function drawHorizontalRef(ctx, pad, plotW, plotH, yMin, yMax, val, label, color, alignRight = false) {
+      if (val <= yMin || val >= yMax * 0.98) return;
+      const y = pad.top + plotH - ((val - yMin) / (yMax - yMin)) * plotH;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      ctx.moveTo(pad.left, y);
+      ctx.lineTo(pad.left + plotW, y);
+      ctx.stroke();
+
+      ctx.fillStyle = color;
+      ctx.font = "600 11px system-ui, sans-serif";
+      if (alignRight) {
+        ctx.textAlign = "right";
+        ctx.fillText(label, pad.left + plotW - 8, y - 5);
+      } else {
+        ctx.textAlign = "left";
+        ctx.fillText(label, pad.left + 8, y - 5);
+      }
+      ctx.restore();
+    }
+
+    function drawChart(step, out, p) {
       const canvas = document.getElementById("simCanvas");
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
@@ -829,12 +847,14 @@
       ctx.clearRect(0, 0, w, h);
 
       let yMin = 0;
-      let yMax = 20; // Escala de 0 a 20 g para 1 indivíduo de amêijoa nos Níveis 1 e 2
+      let yMax = 20;
       let yUnit = "g";
 
       if (step === 3) {
-        const maxBiom = Math.max(6, ...out.series.biomClamKg, ...out.series.biomOysterKg);
-        yMax = Math.ceil(maxBiom * 1.15);
+        const commClamBiom = (p.clam * 12.0) / 1000.0;
+        const commOysterBiom = (p.oyster * 75.0) / 1000.0;
+        const maxBiom = Math.max(6, commClamBiom * 1.2, commOysterBiom * 1.15, ...out.series.biomClamKg, ...out.series.biomOysterKg);
+        yMax = Math.ceil(maxBiom * 1.12);
         yUnit = "kg/m²";
       } else if (step === 4) {
         yMax = 260;
@@ -865,23 +885,7 @@
         ctx.fillText(m, x, h - 8);
       });
 
-      if (step <= 2) {
-        // Linha de tamanho mínimo legal de captura / comercial (~12 g / 32 mm)
-        const legalY = pad.top + plotH - (12.0 / yMax) * plotH;
-        ctx.save();
-        ctx.strokeStyle = dark ? "rgba(52, 211, 153, 0.4)" : "rgba(4, 120, 87, 0.35)";
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath();
-        ctx.moveTo(pad.left, legalY);
-        ctx.lineTo(pad.left + plotW, legalY);
-        ctx.stroke();
-        ctx.fillStyle = dark ? "#34d399" : "#047857";
-        ctx.textAlign = "left";
-        ctx.font = "11px system-ui, sans-serif";
-        ctx.fillText("Referência comercial (~12 g / 32 mm)", pad.left + 8, legalY - 5);
-        ctx.restore();
-      }
-
+      // Janela de Verão (Níveis 1 a 3)
       if (step <= 3) {
         const x1 = pad.left + (180 / 364) * plotW;
         const x2 = pad.left + (250 / 364) * plotW;
@@ -892,6 +896,56 @@
         ctx.fillText("Período Estival", (x1 + x2) / 2, pad.top + 14);
       }
 
+      // LINHAS DE REFERÊNCIA COMERCIAL E DE CONSERVAÇÃO
+      if (step <= 2) {
+        // Níveis 1 e 2: Pesos comerciais individuais de R. decussatus
+        drawHorizontalRef(
+          ctx, pad, plotW, plotH, yMin, yMax,
+          12.0,
+          "Peso comercial mínimo: 12 g (~32 mm)",
+          dark ? "rgba(52, 211, 153, 0.75)" : "rgba(4, 120, 87, 0.75)",
+          false
+        );
+        drawHorizontalRef(
+          ctx, pad, plotW, plotH, yMin, yMax,
+          16.0,
+          "Calibre comercial ótimo: 16 g (~35 mm)",
+          dark ? "rgba(56, 189, 248, 0.75)" : "rgba(3, 105, 161, 0.75)",
+          true
+        );
+      } else if (step === 3) {
+        // Nível 3: Biomassa comercial equivalente por m² para a densidade selecionada
+        const targetClamBiom = (p.clam * 12.0) / 1000.0;
+        drawHorizontalRef(
+          ctx, pad, plotW, plotH, yMin, yMax,
+          targetClamBiom,
+          `Meta comercial Amêijoa (12 g/ind → ${targetClamBiom.toFixed(1)} kg/m²)`,
+          dark ? "rgba(56, 189, 248, 0.8)" : "rgba(3, 105, 161, 0.8)",
+          false
+        );
+
+        if (p.oyster > 0) {
+          const targetOysterBiom = (p.oyster * 75.0) / 1000.0;
+          drawHorizontalRef(
+            ctx, pad, plotW, plotH, yMin, yMax,
+            targetOysterBiom,
+            `Meta comercial Ostra Calibre T3 (75 g/ind → ${targetOysterBiom.toFixed(1)} kg/m²)`,
+            dark ? "rgba(251, 191, 36, 0.85)" : "rgba(180, 83, 9, 0.85)",
+            true
+          );
+        }
+      } else if (step === 4) {
+        // Nível 4: Limiar de bom estado ecológico para Zostera noltei
+        drawHorizontalRef(
+          ctx, pad, plotW, plotH, yMin, yMax,
+          140.0,
+          "Limiar de Bom Estado Ecológico Zostera noltei (140 g DW/m²)",
+          dark ? "rgba(52, 211, 153, 0.75)" : "rgba(4, 120, 87, 0.75)",
+          false
+        );
+      }
+
+      // Curvas principais
       const lines = [];
       if (step === 1) {
         lines.push({ data: out.series.wClam, color: "#0284c7", dashed: false });
@@ -922,6 +976,17 @@
         ctx.stroke();
         ctx.restore();
       });
+
+      // Marcador final do peso individual no último dia do ano (Níveis 1 a 3)
+      if (step <= 2) {
+        const finalVal = out.finalClam;
+        const fy = pad.top + plotH - ((finalVal - yMin) / (yMax - yMin)) * plotH;
+        const fx = pad.left + plotW;
+        ctx.fillStyle = "#0284c7";
+        ctx.beginPath();
+        ctx.arc(fx, fy, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
 
     function updateStepVisibility() {
@@ -969,12 +1034,16 @@
 
       const out = runModel(currentStep, p);
 
+      const clamStatusText = out.finalClam >= 16.0
+        ? `Calibre Ótimo (~${out.shellLengthMm} mm)`
+        : out.finalClam >= 12.0
+        ? `Calibre Comercial (~${out.shellLengthMm} mm)`
+        : `Abaixo do Comercial (~${out.shellLengthMm} mm)`;
+
       document.getElementById("kpiClam").textContent = out.finalClam.toFixed(1) + " g";
       const kpiClamStatus = document.getElementById("kpiClamStatus");
-      kpiClamStatus.textContent = currentStep === 1
-        ? `Concha: ~${out.shellLengthMm} mm (1 ind.)`
-        : `~${out.shellLengthMm} mm (${out.finalBiomClamKg.toFixed(1)} kg/m²)`;
-      kpiClamStatus.className = "metric-status " + (out.finalClam >= 13.0 ? "status-ok" : out.finalClam >= 9.5 ? "status-warn" : "status-crit");
+      kpiClamStatus.textContent = clamStatusText;
+      kpiClamStatus.className = "metric-status " + (out.finalClam >= 12.0 ? "status-ok" : out.finalClam >= 9.5 ? "status-warn" : "status-crit");
 
       document.getElementById("kpiFood").textContent = out.depletionPct + " %";
       const kpiFoodStatus = document.getElementById("kpiFoodStatus");
@@ -983,8 +1052,14 @@
 
       document.getElementById("kpiOyster").textContent = out.finalBiomOysterKg.toFixed(1) + " kg/m²";
       const kpiOysterStatus = document.getElementById("kpiOysterStatus");
-      kpiOysterStatus.textContent = p.oyster === 0 ? "Ausente (0 ind/m²)" : `Peso médio: ${out.finalOyster.toFixed(0)} g/ind.`;
-      kpiOysterStatus.className = "metric-status " + (p.oyster === 0 ? "status-ok" : "status-warn");
+      if (p.oyster === 0) {
+        kpiOysterStatus.textContent = "Ausente (0 ind/m²)";
+        kpiOysterStatus.className = "metric-status status-ok";
+      } else {
+        const oStatus = out.finalOyster >= 75 ? "Calibre Comercial T3" : "Sub-comercial (<75 g)";
+        kpiOysterStatus.textContent = `${out.finalOyster.toFixed(0)} g/ind. (${oStatus})`;
+        kpiOysterStatus.className = "metric-status " + (out.finalOyster >= 75 ? "status-ok" : "status-warn");
+      }
 
       document.getElementById("kpiEco").textContent = out.minSummerDO.toFixed(1) + " mg/L";
       const kpiEcoStatus = document.getElementById("kpiEcoStatus");
@@ -996,38 +1071,43 @@
 
       if (currentStep === 1) {
         legendBar.innerHTML = `
-          <span class="legend-item"><span class="dot" style="background:#0284c7"></span> <strong>Peso fresco total de 1 indivíduo de <em>Ruditapes decussatus</em> (g)</strong> — Semente inicial: 3.5 g (~22 mm)</span>
+          <span class="legend-item"><span class="dot" style="background:#0284c7"></span> <strong>Peso de 1 indivíduo de <em>R. decussatus</em> (g)</strong></span>
+          <span class="legend-item"><span class="dot" style="background:#047857"></span> <strong>Comercial mín.: 12 g (~32 mm)</strong></span>
+          <span class="legend-item"><span class="dot" style="background:#0369a1"></span> <strong>Calibre ótimo: 16 g (~35 mm)</strong></span>
         `;
         discoveryBox.innerHTML = p.temp >= 2.0
-          ? `<strong>Interpretação Bioenergética:</strong> Com uma anomalia de <strong>+${p.temp.toFixed(1)} °C</strong>, a temperatura do sedimento intertidal no verão ultrapassa <strong>26.8 °C</strong>. O custo metabólico de manutenção somática excede a assimilação e o indivíduo perde massa corporal entre Julho e Agosto, terminando o ano com <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong>.`
-          : `<strong>Interpretação Bioenergética:</strong> Sob o regime térmico climatológico da Ria Formosa, <strong>1 indivíduo</strong> semeado com 3.5 g (~22 mm) atinge <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> após 12 meses, ultrapassando a referência comercial no outono.`;
+          ? `<strong>Interpretação Bioenergética:</strong> Com uma anomalia de <strong>+${p.temp.toFixed(1)} °C</strong>, a temperatura do sedimento intertidal no verão ultrapassa <strong>26.8 °C</strong>. O indivíduo perde massa corporal entre Julho e Agosto e termina o ano com <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> — ficando <strong>abaixo do peso comercial mínimo (12 g)</strong>.`
+          : `<strong>Interpretação Bioenergética:</strong> Sob o regime térmico climatológico da Ria Formosa, <strong>1 indivíduo</strong> semeado com 3.5 g (~22 mm) ultrapassa o peso comercial mínimo (12 g) em Setembro e atinge o calibre ótimo de <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> em Dezembro.`;
       } else if (currentStep === 2) {
         legendBar.innerHTML = `
           <span class="legend-item"><span class="dot" style="background:#0284c7"></span> <strong>Peso de 1 indivíduo no viveiro (g)</strong></span>
-          <span class="legend-item"><span class="dot" style="background:#94a3b8"></span> <strong>Referência sem depleção local de alimento (tracejado)</strong></span>
+          <span class="legend-item"><span class="dot" style="background:#94a3b8"></span> <strong>Referência sem depleção local (tracejado)</strong></span>
+          <span class="legend-item"><span class="dot" style="background:#047857"></span> <strong>Referências comerciais: 12 g e 16 g</strong></span>
         `;
         discoveryBox.innerHTML = out.depletionPct <= 15
-          ? `<strong>Interpretação Hidrodinâmica:</strong> Com <strong>τ = ${p.tau.toFixed(1)} dias</strong> e <strong>${p.clam} ind/m²</strong>, a depleção local de seston é de apenas <strong>${out.depletionPct}%</strong>. O elevado prisma de maré e a ressuspensão de <strong>microfitobentos (MPB)</strong> mantêm a curva azul muito próxima da curva potencial tracejada (${out.finalClam.toFixed(1)} g vs. ${out.finalClamIdeal.toFixed(1)} g).`
-          : `<strong>Interpretação Hidrodinâmica:</strong> Num setor interno mais confinado (<strong>τ = ${p.tau.toFixed(1)} dias</strong>) com <strong>${p.clam} ind/m²</strong>, a renovação hídrica é mais lenta que a taxa de filtração conjunta (depleção de <strong>${out.depletionPct}%</strong>), reduzindo o crescimento individual de ${out.finalClamIdeal.toFixed(1)} g para <strong>${out.finalClam.toFixed(1)} g</strong>.`;
+          ? `<strong>Interpretação Hidrodinâmica:</strong> Com <strong>τ = ${p.tau.toFixed(1)} dias</strong> e <strong>${p.clam} ind/m²</strong>, a depleção local de seston é de apenas <strong>${out.depletionPct}%</strong>. O elevado prisma de maré e a ressuspensão de <strong>microfitobentos (MPB)</strong> permitem atingir <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong>, bem acima do limiar comercial de 12 g.`
+          : `<strong>Interpretação Hidrodinâmica:</strong> Num setor interno mais confinado (<strong>τ = ${p.tau.toFixed(1)} dias</strong>) com <strong>${p.clam} ind/m²</strong>, a depleção de seston (<strong>${out.depletionPct}%</strong>) reduz o peso final de ${out.finalClamIdeal.toFixed(1)} g para <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong>, ${out.finalClam >= 12 ? "mantendo-se ainda acima do peso comercial mínimo (12 g)" : "caindo abaixo do peso comercial mínimo (12 g)"}.`;
       } else if (currentStep === 3) {
+        const targetClamBiom = (p.clam * 12.0) / 1000.0;
+        const targetOysterBiom = (p.oyster * 75.0) / 1000.0;
         legendBar.innerHTML = `
-          <span class="legend-item"><span class="dot" style="background:#0284c7"></span> <strong>Biomassa populacional de <em>R. decussatus</em> (kg/m²)</strong></span>
-          <span class="legend-item"><span class="dot" style="background:#d97706"></span> <strong>Biomassa populacional de <em>M. gigas</em> (kg/m²)</strong></span>
+          <span class="legend-item"><span class="dot" style="background:#0284c7"></span> <strong>Biomassa <em>R. decussatus</em> (kg/m²)</strong> [Meta 12 g/ind: ${targetClamBiom.toFixed(1)} kg/m²]</span>
+          <span class="legend-item"><span class="dot" style="background:#d97706"></span> <strong>Biomassa <em>M. gigas</em> (kg/m²)</strong> ${p.oyster > 0 ? `[Meta 75 g/ind: ${targetOysterBiom.toFixed(1)} kg/m²]` : "[Ausente]"}</span>
         `;
         discoveryBox.innerHTML = p.oyster === 0
-          ? `<strong>Interpretação Aquícola:</strong> Sem mesas de ostra no canal (<strong>0 ind/m²</strong>), a biomassa de <em>M. gigas</em> permanece em <strong>0.0 kg/m²</strong> e o banco de amêijoa-boa atinge <strong>${out.finalBiomClamKg.toFixed(1)} kg/m²</strong> (${p.clam} ind/m² × ${out.finalClam.toFixed(1)} g). Aumente a densidade de <em>M. gigas</em> para simular a introdução de ostreicultura.`
-          : `<strong>Interpretação Aquícola:</strong> Com <strong>${p.oyster} ostras/m²</strong>, a biomassa de <em>M. gigas</em> atinge <strong>${out.finalBiomOysterKg.toFixed(1)} kg/m²</strong> (peso médio: ${out.finalOyster.toFixed(0)} g/ostra). A filtração combinada eleva a depleção de seston para <strong>${out.depletionPct}%</strong>, ajustando o peso individual da amêijoa para <strong>${out.finalClam.toFixed(1)} g</strong> (${out.finalBiomClamKg.toFixed(1)} kg/m²).`;
+          ? `<strong>Interpretação Aquícola:</strong> Sem mesas de ostra no canal (<strong>0 ind/m²</strong>), a biomassa de <em>M. gigas</em> permanece em <strong>0.0 kg/m²</strong>. O banco de amêijoa-boa atinge <strong>${out.finalBiomClamKg.toFixed(1)} kg/m²</strong> (peso médio: <strong>${out.finalClam.toFixed(1)} g/ind.</strong>), superando a linha tracejada da meta comercial (${targetClamBiom.toFixed(1)} kg/m² para 12 g/ind.).`
+          : `<strong>Interpretação Aquícola:</strong> Com <strong>${p.oyster} ostras/m²</strong>, a ostra atinge <strong>${out.finalBiomOysterKg.toFixed(1)} kg/m²</strong> (peso individual: <strong>${out.finalOyster.toFixed(0)} g</strong> vs. 75 g comercial T3) e a amêijoa atinge <strong>${out.finalBiomClamKg.toFixed(1)} kg/m²</strong> (peso individual: <strong>${out.finalClam.toFixed(1)} g</strong> vs. 12 g comercial). As linhas tracejadas permitem verificar se cada espécie cumpre a respetiva meta de colheita.`;
       } else if (currentStep === 4) {
         legendBar.innerHTML = `
-          <span class="legend-item"><span class="dot" style="background:#059669"></span> <strong>Pradaria de <em>Zostera noltei</em> (g DW/m²)</strong></span>
+          <span class="legend-item"><span class="dot" style="background:#059669"></span> <strong>Pradaria de <em>Zostera noltei</em> (g DW/m²)</strong> [Limiar Bom Estado: 140 g/m²]</span>
           <span class="legend-item"><span class="dot" style="background:#9333ea"></span> <strong>Macroalgas oportunistas <em>Ulva</em> spp. (g DW/m²)</strong></span>
         `;
         discoveryBox.innerHTML = out.finalUlva > out.finalZostera || out.minSummerDO < 4.2
-          ? `<strong>Interpretação Ecossistémica:</strong> Em canais com tempo de residência elevado (<strong>τ = ${p.tau.toFixed(1)} dias</strong>), a acumulação de biodepósitos e a excreção de amónia (NH₄⁺) pelos bivalves somam-se à carga externa de azoto, promovendo a dominância de <em>Ulva</em> spp. (<strong>${out.finalUlva.toFixed(0)} g DW/m²</strong>), o sombreamento de <em>Zostera noltei</em> e a queda do oxigénio noturno para <strong>${out.minSummerDO.toFixed(1)} mg/L</strong>.`
-          : `<strong>Interpretação Ecossistémica:</strong> A renovação eficiente pela maré (<strong>τ = ${p.tau.toFixed(1)} dias</strong>) dispersa os biodepósitos e o azoto regenerado, mantendo o oxigénio dissolvido noturno em <strong>${out.minSummerDO.toFixed(1)} mg/L</strong> e preservando a dominância da pradaria de <em>Zostera noltei</em> (<strong>${out.finalZostera.toFixed(0)} g DW/m²</strong>).`;
+          ? `<strong>Interpretação Ecossistémica:</strong> Em canais com tempo de residência elevado (<strong>τ = ${p.tau.toFixed(1)} dias</strong>), a acumulação de biodepósitos e a excreção de amónia (NH₄⁺) pelos bivalves somam-se à carga externa de azoto, promovendo a dominância de <em>Ulva</em> spp. (<strong>${out.finalUlva.toFixed(0)} g DW/m²</strong>), empurrando a <em>Zostera noltei</em> abaixo do limiar de conservação e reduzindo o O₂ noturno para <strong>${out.minSummerDO.toFixed(1)} mg/L</strong>.`
+          : `<strong>Interpretação Ecossistémica:</strong> A renovação eficiente pela maré (<strong>τ = ${p.tau.toFixed(1)} dias</strong>) dispersa os biodepósitos e o azoto regenerado, mantendo o oxigénio dissolvido noturno em <strong>${out.minSummerDO.toFixed(1)} mg/L</strong> e a pradaria de <em>Zostera noltei</em> (<strong>${out.finalZostera.toFixed(0)} g DW/m²</strong>) acima do limiar de bom estado ecológico (140 g DW/m²).`;
       }
 
-      drawChart(currentStep, out);
+      drawChart(currentStep, out, p);
     }
 
     document.querySelectorAll(".step-tab").forEach((btn) => {
