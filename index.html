@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- MANDATORY: Declare support for both light and dark themes -->
+  <meta name="color-scheme" content="light dark" />
+  <script>
+    {
+      const colorScheme = localStorage.getItem("color-scheme");
+      if (colorScheme) {
+        document.querySelector('meta[name="color-scheme"]').content = colorScheme;
+        document.documentElement.classList.add(colorScheme);
+      }
+    }
+  </script>
+  <title>Modelação Ecológica Aplicada à Ria Formosa — Mestrado em Biologia Marinha</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+
+      --bg-light: #f8fafc;
+      --bg-dark: #0b111e;
+      --card-light: #ffffff;
+      --card-dark: #111a2e;
+      --card-alt-light: #f1f5f9;
+      --card-alt-dark: #17233b;
+      --text-light: #0f172a;
+      --text-dark: #f1f5f9;
+      --muted-light: #475569;
+      --muted-dark: #94a3b8;
+      --border-light: #e2e8f0;
+      --border-dark: #22324d;
+      --accent-light: #0369a1;
+      --accent-dark: #38bdf8;
+      --emerald-light: #047857;
+      --emerald-dark: #34d399;
+      --amber-light: #b45309;
+      --amber-dark: #fbbf24;
+      --rose-light: #be123c;
+      --rose-dark: #fb7185;
+
+      --bg: var(--bg-light);
+      --card: var(--card-light);
+      --card-alt: var(--card-alt-light);
+      --text: var(--text-light);
+      --muted: var(--muted-light);
+      --border: var(--border-light);
+      --accent: var(--accent-light);
+      --emerald: var(--emerald-light);
+      --amber: var(--amber-light);
+      --rose: var(--rose-light);
+
+      @media (prefers-color-scheme: dark) {
+        --bg: var(--bg-dark);
+        --card: var(--card-dark);
+        --card-alt: var(--card-alt-dark);
+        --text: var(--text-dark);
+        --muted: var(--muted-dark);
+        --border: var(--border-dark);
+        --accent: var(--accent-dark);
+        --emerald: var(--emerald-dark);
+        --amber: var(--amber-dark);
+        --rose: var(--rose-dark);
+      }
+
+      @supports (color: light-dark(white, black)) {
+        --bg: light-dark(var(--bg-light), var(--bg-dark));
+        --card: light-dark(var(--card-light), var(--card-dark));
+        --card-alt: light-dark(var(--card-alt-light), var(--card-alt-dark));
+        --text: light-dark(var(--text-light), var(--text-dark));
+        --muted: light-dark(var(--muted-light), var(--muted-dark));
+        --border: light-dark(var(--border-light), var(--border-dark));
+        --accent: light-dark(var(--accent-light), var(--accent-dark));
+        --emerald: light-dark(var(--emerald-light), var(--emerald-dark));
+        --amber: light-dark(var(--amber-light), var(--amber-dark));
+        --rose: light-dark(var(--rose-light), var(--rose-dark));
+      }
+
+      accent-color: var(--accent);
+    }
+
+    html.light {
+      color-scheme: light;
+      --bg: var(--bg-light);
+      --card: var(--card-light);
+      --card-alt: var(--card-alt-light);
+      --text: var(--text-light);
+      --muted: var(--muted-light);
+      --border: var(--border-light);
+      --accent: var(--accent-light);
+      --emerald: var(--emerald-light);
+      --amber: var(--amber-light);
+      --rose: var(--rose-light);
+    }
+
+    html.dark {
+      color-scheme: dark;
+      --bg: var(--bg-dark);
+      --card: var(--card-dark);
+      --card-alt: var(--card-alt-dark);
+      --text: var(--text-dark);
+      --muted: var(--muted-dark);
+      --border: var(--border-dark);
+      --accent: var(--accent-dark);
+      --emerald: var(--emerald-dark);
+      --amber: var(--amber-dark);
+      --rose: var(--rose-dark);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 1.5rem 1.25rem 3rem;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand p {
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    button {
+      font: inherit;
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 0.48rem 0.9rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    button:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: var(--card-alt);
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    button.btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    html.dark button.btn-primary {
+      color: #0b111e;
+    }
+
+    /* STEPPER PROGRESS BAR */
+    .stepper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    @media (max-width: 680px) {
+      .stepper {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .step-tab {
+      text-align: left;
+      padding: 0.7rem 0.9rem;
+      border-radius: 0.6rem;
+      border: 1px solid var(--border);
+      background: var(--card);
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .step-tab.active {
+      border-color: var(--accent);
+      border-width: 2px;
+      background: var(--card-alt);
+    }
+
+    .step-num {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .step-tab.active .step-num {
+      color: var(--accent);
+    }
+
+    .step-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* STORY & EQUATION CARD */
+    .story-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.15rem 1.35rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .story-text {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .story-badge {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.2rem;
+    }
+
+    .story-text h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .story-text p {
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .equation-pill {
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.65rem 0.9rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.79rem;
+      color: var(--text);
+    }
+
+    .equation-pill span.focus-term {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* MAIN STAGE */
+    .stage-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    @media (max-width: 820px) {
+      .stage-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.2rem;
+    }
+
+    .panel-label {
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .control-item {
+      padding: 0.85rem;
+      border-radius: 0.6rem;
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      margin-bottom: 0.75rem;
+    }
+
+    .control-item[hidden] {
+      display: none;
+    }
+
+    .control-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.83rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .control-val {
+      color: var(--accent);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .control-desc {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.45rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .metric-chip {
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      border-radius: 0.6rem;
+      padding: 0.75rem 0.9rem;
+    }
+
+    .metric-chip[hidden] {
+      display: none;
+    }
+
+    .metric-title {
+      font-size: 0.74rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .metric-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0.15rem 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-status {
+      font-size: 0.74rem;
+      font-weight: 600;
+    }
+
+    .status-ok { color: var(--emerald); }
+    .status-warn { color: var(--amber); }
+    .status-crit { color: var(--rose); }
+
+    .canvas-box {
+      height: 300px;
+      width: 100%;
+      position: relative;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .legend-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.15rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.85rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .discovery-box {
+      margin-top: 0.95rem;
+      padding: 0.9rem 1.1rem;
+      border-radius: 0.6rem;
+      background: var(--card-alt);
+      border-left: 3px solid var(--accent);
+      font-size: 0.84rem;
+      line-height: 1.55;
+    }
+
+    .step-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <h1>Modelação Ecológica Aplicada à Ria Formosa</h1>
+      <p>Caso de Estudo Progressivo: <em>Ruditapes decussatus</em>, Hidrodinâmica, Ostreicultura e Conservação • Mestrado em Biologia Marinha</p>
+    </div>
+    <div style="display:flex; gap:0.5rem;">
+      <button type="button" id="resetBtn">Repor Parâmetros</button>
+      <button type="button" id="themeToggle">Alternar Tema</button>
+    </div>
+  </header>
+
+  <!-- BARRA DE PASSOS (1 A 4) -->
+  <nav class="stepper" aria-label="Níveis de Complexidade do Modelo">
+    <button type="button" class="step-tab active" data-step="1">
+      <span class="step-num">Nível 1 • Bioenergética</span>
+      <span class="step-name">1 Indivíduo (DEB)</span>
+    </button>
+    <button type="button" class="step-tab" data-step="2">
+      <span class="step-num">Nível 2 • Hidrodinâmica</span>
+      <span class="step-name">Maré e Microfitobentos</span>
+    </button>
+    <button type="button" class="step-tab" data-step="3">
+      <span class="step-num">Nível 3 • Aquacultura</span>
+      <span class="step-name">Biomassa no Canal (kg/m²)</span>
+    </button>
+    <button type="button" class="step-tab" data-step="4">
+      <span class="step-num">Nível 4 • Conservação</span>
+      <span class="step-name">Biodeposição e <em>Zostera</em></span>
+    </button>
+  </nav>
+
+  <!-- EXPLICAÇÃO DO PASSO ATUAL + EQUAÇÃO -->
+  <section class="story-card" aria-live="polite">
+    <div class="story-text">
+      <span class="story-badge" id="stepBadge">Nível 1 de 4 • Modelo Bioenergético Individual (DEB)</span>
+      <h2 id="stepTitle">Crescimento anual de 1 indivíduo de amêijoa-boa (<em>Ruditapes decussatus</em>)</h2>
+      <p id="stepQuestion"></p>
+    </div>
+    <div class="equation-pill" id="stepEquation"></div>
+  </section>
+
+  <!-- ÁREA PRINCIPAL -->
+  <main class="stage-grid">
+    <!-- COLUNA ESQUERDA: FORÇAMENTOS AMBIENTAIS -->
+    <aside class="card">
+      <div class="panel-label">Variáveis de Forçamento</div>
+
+      <!-- Controlo 1 (Nível 1+) -->
+      <div class="control-item" id="ctrlTemp">
+        <div class="control-top">
+          <label for="tempSlider">Anomalia Térmica (ΔT)</label>
+          <span class="control-val" id="tempVal">+0.0 °C</span>
+        </div>
+        <p class="control-desc">Desvio face ao ciclo térmico sazonal da Ria Formosa (13.0–24.5 °C).</p>
+        <input type="range" id="tempSlider" min="-1.0" max="4.0" step="0.5" value="0.0" />
+      </div>
+
+      <!-- Controlos 2 e 3 (Nível 2+) -->
+      <div class="control-item" id="ctrlTau" hidden>
+        <div class="control-top">
+          <label for="tauSlider">Tempo de Residência (τ)</label>
+          <span class="control-val" id="tauVal">1.5 dias</span>
+        </div>
+        <p class="control-desc">Renovação de maré (1–2 d junto às barras; 6–10 d nos canais internos).</p>
+        <input type="range" id="tauSlider" min="1.0" max="10.0" step="0.5" value="1.5" />
+      </div>
+
+      <div class="control-item" id="ctrlClam" hidden>
+        <div class="control-top">
+          <label for="clamSlider">Densidade de <em>R. decussatus</em></label>
+          <span class="control-val" id="clamVal">200 ind/m²</span>
+        </div>
+        <p class="control-desc">Densidade de sementeira no banco intertidal (início = 3.5 g / 22 mm).</p>
+        <input type="range" id="clamSlider" min="50" max="600" step="25" value="200" />
+      </div>
+
+      <!-- Controlo 4 (Nível 3+) -->
+      <div class="control-item" id="ctrlOyster" hidden>
+        <div class="control-top">
+          <label for="oysterSlider">Densidade de <em>M. gigas</em> (Ostra)</label>
+          <span class="control-val" id="oysterVal">0 ind/m²</span>
+        </div>
+        <p class="control-desc">Densidade equivalente em mesas intertidais (início = 10 g / 40 mm).</p>
+        <input type="range" id="oysterSlider" min="0" max="200" step="20" value="0" />
+      </div>
+
+      <!-- Controlo 5 (Nível 4) -->
+      <div class="control-item" id="ctrlNut" hidden>
+        <div class="control-top">
+          <label for="nutSlider">Carga Externa de Azoto (DIN)</label>
+          <span class="control-val" id="nutVal">1.0x</span>
+        </div>
+        <p class="control-desc">Fator de carga antropogénica (escorrência agrícola e efluentes urbanos).</p>
+        <input type="range" id="nutSlider" min="0.5" max="3.0" step="0.25" value="1.0" />
+      </div>
+    </aside>
+
+    <!-- COLUNA DIREITA: INDICADORES E GRÁFICO -->
+    <section class="card">
+      <div class="metrics-row">
+        <div class="metric-chip" id="kpiBoxClam">
+          <div class="metric-title">Peso Final (1 Indivíduo)</div>
+          <div class="metric-val" id="kpiClam">15.8 g</div>
+          <div class="metric-status status-ok" id="kpiClamStatus">Comprimento: ~35 mm</div>
+        </div>
+
+        <div class="metric-chip" id="kpiBoxFood" hidden>
+          <div class="metric-title">Depleção Local de Seston</div>
+          <div class="metric-val" id="kpiFood">7 %</div>
+          <div class="metric-status status-ok" id="kpiFoodStatus">Tampão Maré + MPB</div>
+        </div>
+
+        <div class="metric-chip" id="kpiBoxOyster" hidden>
+          <div class="metric-title">Biomassa de Ostra (Canal)</div>
+          <div class="metric-val" id="kpiOyster">0.0 kg/m²</div>
+          <div class="metric-status status-ok" id="kpiOysterStatus">Ausente (0 ind/m²)</div>
+        </div>
+
+        <div class="metric-chip" id="kpiBoxEco" hidden>
+          <div class="metric-title">O₂ Mínimo Noturno (Verão)</div>
+          <div class="metric-val" id="kpiEco">6.2 mg/L</div>
+          <div class="metric-status status-ok" id="kpiEcoStatus">Normóxia (&gt;5 mg/L)</div>
+        </div>
+      </div>
+
+      <div class="canvas-box">
+        <canvas id="simCanvas"></canvas>
+      </div>
+
+      <div class="legend-bar" id="legendBar"></div>
+
+      <div class="discovery-box" id="discoveryBox"></div>
+
+      <div class="step-footer">
+        <button type="button" id="prevStepBtn" disabled>← Nível Anterior</button>
+        <button type="button" id="nextStepBtn" class="btn-primary">Avançar para Nível 2: Hidrodinâmica e Maré →</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ============================================================================
+    // 1. GESTÃO DE TEMA
+    // ============================================================================
+    const themeToggleBtn = document.getElementById("themeToggle");
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    function isCurrentlyDark() {
+      const html = document.documentElement;
+      if (html.classList.contains("dark")) return true;
+      if (html.classList.contains("light")) return false;
+      return mediaQuery.matches;
+    }
+
+    themeToggleBtn.addEventListener("click", () => {
+      const html = document.documentElement;
+      const meta = document.querySelector('meta[name="color-scheme"]');
+      const nextScheme = isCurrentlyDark() ? "light" : "dark";
+      html.classList.remove("light", "dark");
+      html.classList.add(nextScheme);
+      meta.content = nextScheme;
+      localStorage.setItem("color-scheme", nextScheme);
+      updateSimulation();
+    });
+
+    mediaQuery.addEventListener("change", () => {
+      if (!localStorage.getItem("color-scheme")) updateSimulation();
+    });
+
+    // ============================================================================
+    // 2. DESCRIÇÃO DOS 4 NÍVEIS DE COMPLEXIDADE
+    // ============================================================================
+    let currentStep = 1;
+
+    const stepInfo = {
+      1: {
+        badge: "Nível 1 de 4 • Modelo Bioenergético Individual (DEB — Kooijman, 2000)",
+        title: "Crescimento anual de 1 indivíduo de amêijoa-boa (Ruditapes decussatus)",
+        question: "Simulação de <strong>1 único indivíduo</strong> desde juvenil de sementeira (<strong>3.5 g</strong>, ~22 mm) ao longo de 365 dias sob disponibilidade alimentar não limitante. Aumente a <strong>Anomalia Térmica</strong> para observar a depressão estival quando a temperatura intertidal excede o limiar térmico superior (26.8 °C; Sobral &amp; Widdows, 1997).",
+        eq: 'dW/dt = Assimilação(<span class="focus-term">T</span>) − Manutenção(<span class="focus-term">T</span>)  [1 indivíduo, g]',
+        nextLabel: "Avançar para Nível 2: Hidrodinâmica e Maré →"
+      },
+      2: {
+        badge: "Nível 2 de 4 • Acoplamento Físico-Biológico (Prisma de Maré e Microfitobentos)",
+        title: "Crescimento individual num viveiro da Ria Formosa: renovação hídrica vs. densidade",
+        question: "A Ria Formosa troca 50% a 75% do volume de água em cada maré semidiurna e ressuspende diatomáceas bênticas (<strong>microfitobentos — MPB</strong>). Por isso, em setores bem renovados (<strong>τ = 1.5 dias</strong>) a depleção de seston é reduzida (~7%). Compare com um canal interno confinado (<strong>τ > 7 dias</strong>) sob elevada densidade.",
+        eq: 'Seston = Fito_Oceano(<span class="focus-term">τ</span>) + <span class="focus-term">MPB</span> − Filtração(<span class="focus-term">Densidade</span>)',
+        nextLabel: "Avançar para Nível 3: Biomassa e Ostreicultura →"
+      },
+      3: {
+        badge: "Nível 3 de 4 • Escala Populacional e Interação Interespecífica (kg/m²)",
+        title: "Biomassa total por unidade de área (kg/m²): R. decussatus vs. Magallana gigas",
+        question: "Passamos da escala de 1 indivíduo (g) para a <strong>biomassa populacional no canal (kg/m² = Densidade × Peso Individual)</strong>. Com a densidade de <em>M. gigas</em> em <strong>0 ind/m²</strong>, a sua biomassa é nula (0.0 kg/m²). Aumente a densidade de ostras para avaliar a partilha trófica em função do tempo de residência.",
+        eq: 'Biomassa (kg/m²) = <span class="focus-term">Densidade (ind/m²) × Peso_Individual (g) / 1000</span>',
+        nextLabel: "Avançar para Nível 4: Biodeposição e Zostera →"
+      },
+      4: {
+        badge: "Nível 4 de 4 • Acoplamento Pelágico-Bentónico e Conservação de Habitat",
+        title: "Biodeposição, reciclagem de amónia (NH₄⁺) e competição Zostera noltei vs. Ulva spp.",
+        question: "Na Ria Formosa, o principal impacto ecológico de elevadas densidades de bivalves em canais de fraca renovação não é o esgotamento de nutrientes, mas a deposição de fezes/pseudofezes e excreção de <strong>NH₄⁺</strong>, que estimulam macroalgas oportunistas (<em>Ulva</em> spp.), sombreiam as pradarias de <em>Zostera noltei</em> e reduzem o oxigénio noturno.",
+        eq: 'dZostera/dt = Crescimento − Sombreamento(<span class="focus-term">Ulva</span>) − Stress(<span class="focus-term">Biodepósitos</span>)',
+        nextLabel: "Modelo Acoplado Completo"
+      }
+    };
+
+    const sliders = {
+      temp: document.getElementById("tempSlider"),
+      tau: document.getElementById("tauSlider"),
+      clam: document.getElementById("clamSlider"),
+      oyster: document.getElementById("oysterSlider"),
+      nut: document.getElementById("nutSlider")
+    };
+
+    // ============================================================================
+    // 3. MOTOR DE SIMULAÇÃO CALIBRADO COM A LITERATURA DA RIA FORMOSA
+    // ============================================================================
+    function tempResponse(T, T_max, T_A = 5800, T_AH = 38000) {
+      const K = T + 273.15;
+      const K_ref = 293.15;
+      const K_H = T_max + 273.15;
+      const base = Math.exp((T_A / K_ref) - (T_A / K));
+      const highInhib = 1.0 + Math.exp((T_AH / K_H) - (T_AH / K));
+      return base / highInhib;
+    }
+
+    function runModel(step, p) {
+      const days = 365;
+      const dt = 0.25;
+      const stepsPerDay = 4;
+
+      const tau = step >= 2 ? p.tau : 1.5;
+      const clamDens = step >= 2 ? p.clam : 1;
+      const oysterDens = step >= 3 ? p.oyster : 0;
+      const nutFactor = step >= 4 ? p.nut : 1.0;
+
+      // Pesos iniciais realistas (sementeira comercial na Ria Formosa)
+      let wClam = 3.5;      // 1 juvenil de R. decussatus: 3.5 g (~22 mm comprimento de concha)
+      let wClamIdeal = 3.5; // Referência sem depleção trófica local
+      let wOyster = 10.0;   // 1 juvenil de M. gigas: 10.0 g (~40 mm)
+      let bZostera = 160.0; // Biomassa de Zostera noltei (g DW/m²)
+      let bUlva = 14.0;     // Biomassa de Ulva spp. (g DW/m²)
+
+      const series = {
+        wClam: [],
+        wClamIdeal: [],
+        biomClamKg: [],
+        biomOysterKg: [],
+        bZostera: [],
+        bUlva: []
+      };
+
+      let minSummerDO = 99;
+      let summerDepletionSum = 0;
+      let summerDays = 0;
+
+      for (let d = 1; d <= days; d++) {
+        const seasonalPhase = Math.sin(((d - 110) / 365) * 2 * Math.PI);
+        const T_water = 18.8 + 5.7 * seasonalPhase + p.temp;
+        const T_intertidal = T_water + (seasonalPhase > 0 ? 2.1 * seasonalPhase : 0) + (tau > 5 ? 0.6 : 0);
+        const light = 0.68 + 0.32 * Math.sin(((d - 80) / 365) * 2 * Math.PI);
+
+        // Clorofila costeira + Microfitobentos ressuspenso (Brito et al., Newton & Mudge)
+        const chl_ocean = 2.2 + 1.8 * Math.max(0, Math.sin(((d - 75) / 365) * 2 * Math.PI));
+        const mpbResuspended = 1.55 * light * (1.0 + 0.35 / Math.sqrt(tau));
+        const sIdeal = chl_ocean + mpbResuspended;
+
+        let dailyDepletion = 0;
+
+        for (let s = 0; s < stepsPerDay; s++) {
+          const tfClam = tempResponse(T_intertidal, 26.8);
+          const tfOyster = tempResponse(T_water, 31.0);
+
+          if (step >= 2) {
+            const clearClam = clamDens * 0.00075 * Math.pow(Math.max(0.5, wClam), 0.67) * tfClam;
+            const clearOyster = oysterDens * 0.0022 * Math.pow(Math.max(1.0, wOyster), 0.67) * tfOyster;
+            const totalGrazing = (clearClam + clearOyster) / 2.4;
+            const tidalFlushRate = 2.4 / tau;
+            const muPhyto = 0.90 * light * Math.pow(1.06, T_water - 20);
+            dailyDepletion = totalGrazing / (totalGrazing + tidalFlushRate + muPhyto + 0.85);
+          }
+
+          // O alimento disponível no viveiro é monotónico e nunca superior à fronteira ideal
+          const availableSeston = sIdeal * (1.0 - 0.65 * dailyDepletion);
+
+          // Crescimento individual de 1 amêijoa no viveiro (g)
+          const fFoodClam = availableSeston / (availableSeston + 1.15);
+          const maintClam = 0.0068 * Math.exp(0.075 * (T_intertidal - 20)) * Math.pow(wClam, 0.75);
+          const assimClam = 0.0255 * fFoodClam * tfClam * Math.pow(wClam, 0.67);
+          wClam = Math.max(1.0, wClam + (assimClam - maintClam) * dt);
+
+          // Crescimento individual de 1 amêijoa sem depleção local (g)
+          const fFoodIdeal = sIdeal / (sIdeal + 1.15);
+          const maintIdeal = 0.0068 * Math.exp(0.075 * (T_intertidal - 20)) * Math.pow(wClamIdeal, 0.75);
+          const assimIdeal = 0.0255 * fFoodIdeal * tfClam * Math.pow(wClamIdeal, 0.67);
+          wClamIdeal = Math.max(1.0, wClamIdeal + (assimIdeal - maintIdeal) * dt);
+
+          // Crescimento individual de 1 ostra (g)
+          if (oysterDens > 0) {
+            const fFoodOyster = availableSeston / (availableSeston + 1.05);
+            const maintOyster = 0.0065 * Math.exp(0.055 * (T_water - 20)) * Math.pow(wOyster, 0.75);
+            const assimOyster = 0.044 * fFoodOyster * tfOyster * Math.pow(wOyster, 0.67);
+            wOyster = Math.max(2.0, wOyster + (assimOyster - maintOyster) * dt);
+          } else {
+            wOyster = 0;
+          }
+
+          // Nível 4: Dinâmica bentónica (Biodepósitos + NH4+ -> Ulva vs. Zostera noltei)
+          if (step === 4) {
+            const biodepositionLoad = ((clamDens * 0.0006) + (oysterDens * 0.0025)) * (tau / 3.0);
+            const dinEffective = (4.0 * nutFactor) + biodepositionLoad * 1.8;
+            const ulvaGrowth = 0.086 * (dinEffective / (dinEffective + 5.5)) * light * Math.pow(1.06, T_water - 20) * (1 + 0.035 * tau);
+            const ulvaLoss = 0.036 + (1.0 / tau) * 0.045;
+            bUlva = Math.max(2.0, Math.min(280, bUlva + bUlva * (ulvaGrowth - ulvaLoss) * dt));
+
+            const shade = (bUlva / 210) * 0.035;
+            const zGrowth = 0.024 * light * Math.max(0.1, 1.0 - (bZostera / 230));
+            bZostera = Math.max(5.0, bZostera + bZostera * (zGrowth - shade - biodepositionLoad * 0.014) * dt);
+          }
+        }
+
+        const doSat = 14.16 - 0.394 * T_water + 0.0077 * T_water * T_water - 2.1;
+        const respBiv = (clamDens * 0.0011 + oysterDens * 0.0038) * Math.exp(0.055 * (T_water - 20));
+        const respBen = (0.16 + 0.0055 * bUlva + 0.07 * nutFactor) * (tau / 3.2) * Math.exp(0.065 * (T_water - 20));
+        const doMin = Math.max(0.6, doSat - (respBiv + respBen) * 0.52);
+
+        if (d >= 180 && d <= 260) {
+          if (doMin < minSummerDO) minSummerDO = doMin;
+          summerDepletionSum += dailyDepletion;
+          summerDays++;
+        }
+
+        series.wClam.push(wClam);
+        series.wClamIdeal.push(wClamIdeal);
+        series.biomClamKg.push((clamDens * wClam) / 1000.0);
+        series.biomOysterKg.push((oysterDens * wOyster) / 1000.0);
+        series.bZostera.push(bZostera);
+        series.bUlva.push(bUlva);
+      }
+
+      // Relação alométrica peso-comprimento para Ruditapes decussatus no Algarve (Gaspar et al., 2001)
+      const shellLengthMm = Math.round(14.5 * Math.pow(wClam, 0.32));
+
+      return {
+        series,
+        finalClam: wClam,
+        finalClamIdeal: wClamIdeal,
+        shellLengthMm,
+        finalOyster: wOyster,
+        finalBiomClamKg: (clamDens * wClam) / 1000.0,
+        finalBiomOysterKg: (oysterDens * wOyster) / 1000.0,
+        depletionPct: Math.min(65, Math.round((summerDepletionSum / summerDays) * 100)),
+        minSummerDO,
+        finalZostera: bZostera,
+        finalUlva: bUlva
+      };
+    }
+
+    // ============================================================================
+    // 4. RENDERIZAÇÃO GRÁFICA E ATUALIZAÇÃO DE INTERFACE
+    // ============================================================================
+    function drawChart(step, out) {
+      const canvas = document.getElementById("simCanvas");
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+
+      const w = rect.width;
+      const h = rect.height;
+      const dark = isCurrentlyDark();
+      const gridColor = dark ? "rgba(148, 163, 184, 0.14)" : "rgba(100, 116, 139, 0.15)";
+      const textColor = dark ? "#94a3b8" : "#64748b";
+
+      const pad = { top: 20, right: 24, bottom: 30, left: 58 };
+      const plotW = w - pad.left - pad.right;
+      const plotH = h - pad.top - pad.bottom;
+
+      ctx.clearRect(0, 0, w, h);
+
+      let yMin = 0;
+      let yMax = 20; // Escala de 0 a 20 g para 1 indivíduo de amêijoa nos Níveis 1 e 2
+      let yUnit = "g";
+
+      if (step === 3) {
+        const maxBiom = Math.max(6, ...out.series.biomClamKg, ...out.series.biomOysterKg);
+        yMax = Math.ceil(maxBiom * 1.15);
+        yUnit = "kg/m²";
+      } else if (step === 4) {
+        yMax = 260;
+        yUnit = "g/m²";
+      }
+
+      ctx.strokeStyle = gridColor;
+      ctx.fillStyle = textColor;
+      ctx.font = "12px system-ui, sans-serif";
+      ctx.lineWidth = 1;
+
+      const ticks = 4;
+      for (let i = 0; i <= ticks; i++) {
+        const val = yMin + ((yMax - yMin) * i) / ticks;
+        const y = pad.top + plotH - (i / ticks) * plotH;
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(pad.left + plotW, y);
+        ctx.stroke();
+        ctx.textAlign = "right";
+        ctx.fillText(val.toFixed(step === 3 && yMax <= 10 ? 1 : 0) + " " + yUnit, pad.left - 8, y + 4);
+      }
+
+      const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+      ctx.textAlign = "center";
+      months.forEach((m, idx) => {
+        const x = pad.left + (idx / 11) * plotW;
+        ctx.fillText(m, x, h - 8);
+      });
+
+      if (step <= 2) {
+        // Linha de tamanho mínimo legal de captura / comercial (~12 g / 32 mm)
+        const legalY = pad.top + plotH - (12.0 / yMax) * plotH;
+        ctx.save();
+        ctx.strokeStyle = dark ? "rgba(52, 211, 153, 0.4)" : "rgba(4, 120, 87, 0.35)";
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(pad.left, legalY);
+        ctx.lineTo(pad.left + plotW, legalY);
+        ctx.stroke();
+        ctx.fillStyle = dark ? "#34d399" : "#047857";
+        ctx.textAlign = "left";
+        ctx.font = "11px system-ui, sans-serif";
+        ctx.fillText("Referência comercial (~12 g / 32 mm)", pad.left + 8, legalY - 5);
+        ctx.restore();
+      }
+
+      if (step <= 3) {
+        const x1 = pad.left + (180 / 364) * plotW;
+        const x2 = pad.left + (250 / 364) * plotW;
+        ctx.fillStyle = dark ? "rgba(251, 191, 36, 0.05)" : "rgba(180, 83, 9, 0.06)";
+        ctx.fillRect(x1, pad.top, x2 - x1, plotH);
+        ctx.fillStyle = dark ? "#fbbf24" : "#b45309";
+        ctx.font = "600 11px system-ui, sans-serif";
+        ctx.fillText("Período Estival", (x1 + x2) / 2, pad.top + 14);
+      }
+
+      const lines = [];
+      if (step === 1) {
+        lines.push({ data: out.series.wClam, color: "#0284c7", dashed: false });
+      } else if (step === 2) {
+        lines.push({ data: out.series.wClamIdeal, color: "#94a3b8", dashed: true });
+        lines.push({ data: out.series.wClam, color: "#0284c7", dashed: false });
+      } else if (step === 3) {
+        lines.push({ data: out.series.biomClamKg, color: "#0284c7", dashed: false });
+        lines.push({ data: out.series.biomOysterKg, color: "#d97706", dashed: false });
+      } else if (step === 4) {
+        lines.push({ data: out.series.bZostera, color: "#059669", dashed: false });
+        lines.push({ data: out.series.bUlva, color: "#9333ea", dashed: false });
+      }
+
+      lines.forEach((l) => {
+        ctx.save();
+        ctx.strokeStyle = l.color;
+        ctx.lineWidth = l.dashed ? 1.8 : 2.6;
+        if (l.dashed) ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        l.data.forEach((v, i) => {
+          const x = pad.left + (i / (l.data.length - 1)) * plotW;
+          const clamped = Math.max(yMin, Math.min(yMax, v));
+          const y = pad.top + plotH - ((clamped - yMin) / (yMax - yMin)) * plotH;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        ctx.restore();
+      });
+    }
+
+    function updateStepVisibility() {
+      const info = stepInfo[currentStep];
+      document.getElementById("stepBadge").textContent = info.badge;
+      document.getElementById("stepTitle").textContent = info.title;
+      document.getElementById("stepQuestion").innerHTML = info.question;
+      document.getElementById("stepEquation").innerHTML = info.eq;
+
+      document.querySelectorAll(".step-tab").forEach((btn) => {
+        btn.classList.toggle("active", parseInt(btn.dataset.step, 10) === currentStep);
+      });
+
+      document.getElementById("ctrlTau").hidden = currentStep < 2;
+      document.getElementById("ctrlClam").hidden = currentStep < 2;
+      document.getElementById("ctrlOyster").hidden = currentStep < 3;
+      document.getElementById("ctrlNut").hidden = currentStep < 4;
+
+      document.getElementById("kpiBoxFood").hidden = currentStep < 2;
+      document.getElementById("kpiBoxOyster").hidden = currentStep < 3;
+      document.getElementById("kpiBoxEco").hidden = currentStep < 4;
+
+      document.getElementById("prevStepBtn").disabled = currentStep === 1;
+      const nextBtn = document.getElementById("nextStepBtn");
+      nextBtn.textContent = info.nextLabel;
+      nextBtn.disabled = currentStep === 4;
+
+      updateSimulation();
+    }
+
+    function updateSimulation() {
+      const p = {
+        temp: parseFloat(sliders.temp.value),
+        tau: parseFloat(sliders.tau.value),
+        clam: parseFloat(sliders.clam.value),
+        oyster: parseFloat(sliders.oyster.value),
+        nut: parseFloat(sliders.nut.value)
+      };
+
+      document.getElementById("tempVal").textContent = (p.temp >= 0 ? "+" : "") + p.temp.toFixed(1) + " °C";
+      document.getElementById("tauVal").textContent = p.tau.toFixed(1) + " dias";
+      document.getElementById("clamVal").textContent = p.clam + " ind/m²";
+      document.getElementById("oysterVal").textContent = p.oyster + " ind/m²";
+      document.getElementById("nutVal").textContent = p.nut.toFixed(2) + "x";
+
+      const out = runModel(currentStep, p);
+
+      document.getElementById("kpiClam").textContent = out.finalClam.toFixed(1) + " g";
+      const kpiClamStatus = document.getElementById("kpiClamStatus");
+      kpiClamStatus.textContent = currentStep === 1
+        ? `Concha: ~${out.shellLengthMm} mm (1 ind.)`
+        : `~${out.shellLengthMm} mm (${out.finalBiomClamKg.toFixed(1)} kg/m²)`;
+      kpiClamStatus.className = "metric-status " + (out.finalClam >= 13.0 ? "status-ok" : out.finalClam >= 9.5 ? "status-warn" : "status-crit");
+
+      document.getElementById("kpiFood").textContent = out.depletionPct + " %";
+      const kpiFoodStatus = document.getElementById("kpiFoodStatus");
+      kpiFoodStatus.textContent = out.depletionPct < 18 ? "Tampão Maré + MPB" : out.depletionPct < 35 ? "Depleção Moderada" : "Competição Trófica";
+      kpiFoodStatus.className = "metric-status " + (out.depletionPct < 18 ? "status-ok" : out.depletionPct < 35 ? "status-warn" : "status-crit");
+
+      document.getElementById("kpiOyster").textContent = out.finalBiomOysterKg.toFixed(1) + " kg/m²";
+      const kpiOysterStatus = document.getElementById("kpiOysterStatus");
+      kpiOysterStatus.textContent = p.oyster === 0 ? "Ausente (0 ind/m²)" : `Peso médio: ${out.finalOyster.toFixed(0)} g/ind.`;
+      kpiOysterStatus.className = "metric-status " + (p.oyster === 0 ? "status-ok" : "status-warn");
+
+      document.getElementById("kpiEco").textContent = out.minSummerDO.toFixed(1) + " mg/L";
+      const kpiEcoStatus = document.getElementById("kpiEcoStatus");
+      kpiEcoStatus.textContent = out.minSummerDO >= 4.5 && out.finalZostera > out.finalUlva ? "Pradaria Estável" : "Stress Bentónico / Hipóxia";
+      kpiEcoStatus.className = "metric-status " + (out.minSummerDO >= 4.5 && out.finalZostera > out.finalUlva ? "status-ok" : "status-crit");
+
+      const legendBar = document.getElementById("legendBar");
+      const discoveryBox = document.getElementById("discoveryBox");
+
+      if (currentStep === 1) {
+        legendBar.innerHTML = `
+          <span class="legend-item"><span class="dot" style="background:#0284c7"></span> <strong>Peso fresco total de 1 indivíduo de <em>Ruditapes decussatus</em> (g)</strong> — Semente inicial: 3.5 g (~22 mm)</span>
+        `;
+        discoveryBox.innerHTML = p.temp >= 2.0
+          ? `<strong>Interpretação Bioenergética:</strong> Com uma anomalia de <strong>+${p.temp.toFixed(1)} °C</strong>, a temperatura do sedimento intertidal no verão ultrapassa <strong>26.8 °C</strong>. O custo metabólico de manutenção somática excede a assimilação e o indivíduo perde massa corporal entre Julho e Agosto, terminando o ano com <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong>.`
+          : `<strong>Interpretação Bioenergética:</strong> Sob o regime térmico climatológico da Ria Formosa, <strong>1 indivíduo</strong> semeado com 3.5 g (~22 mm) atinge <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> após 12 meses, ultrapassando a referência comercial no outono.`;
+      } else if (currentStep === 2) {
+        legendBar.innerHTML = `
+          <span class="legend-item"><span class="dot" style="background:#0284c7"></span> <strong>Peso de 1 indivíduo no viveiro (g)</strong></span>
+          <span class="legend-item"><span class="dot" style="background:#94a3b8"></span> <strong>Referência sem depleção local de alimento (tracejado)</strong></span>
+        `;
+        discoveryBox.innerHTML = out.depletionPct <= 15
+          ? `<strong>Interpretação Hidrodinâmica:</strong> Com <strong>τ = ${p.tau.toFixed(1)} dias</strong> e <strong>${p.clam} ind/m²</strong>, a depleção local de seston é de apenas <strong>${out.depletionPct}%</strong>. O elevado prisma de maré e a ressuspensão de <strong>microfitobentos (MPB)</strong> mantêm a curva azul muito próxima da curva potencial tracejada (${out.finalClam.toFixed(1)} g vs. ${out.finalClamIdeal.toFixed(1)} g).`
+          : `<strong>Interpretação Hidrodinâmica:</strong> Num setor interno mais confinado (<strong>τ = ${p.tau.toFixed(1)} dias</strong>) com <strong>${p.clam} ind/m²</strong>, a renovação hídrica é mais lenta que a taxa de filtração conjunta (depleção de <strong>${out.depletionPct}%</strong>), reduzindo o crescimento individual de ${out.finalClamIdeal.toFixed(1)} g para <strong>${out.finalClam.toFixed(1)} g</strong>.`;
+      } else if (currentStep === 3) {
+        legendBar.innerHTML = `
+          <span class="legend-item"><span class="dot" style="background:#0284c7"></span> <strong>Biomassa populacional de <em>R. decussatus</em> (kg/m²)</strong></span>
+          <span class="legend-item"><span class="dot" style="background:#d97706"></span> <strong>Biomassa populacional de <em>M. gigas</em> (kg/m²)</strong></span>
+        `;
+        discoveryBox.innerHTML = p.oyster === 0
+          ? `<strong>Interpretação Aquícola:</strong> Sem mesas de ostra no canal (<strong>0 ind/m²</strong>), a biomassa de <em>M. gigas</em> permanece em <strong>0.0 kg/m²</strong> e o banco de amêijoa-boa atinge <strong>${out.finalBiomClamKg.toFixed(1)} kg/m²</strong> (${p.clam} ind/m² × ${out.finalClam.toFixed(1)} g). Aumente a densidade de <em>M. gigas</em> para simular a introdução de ostreicultura.`
+          : `<strong>Interpretação Aquícola:</strong> Com <strong>${p.oyster} ostras/m²</strong>, a biomassa de <em>M. gigas</em> atinge <strong>${out.finalBiomOysterKg.toFixed(1)} kg/m²</strong> (peso médio: ${out.finalOyster.toFixed(0)} g/ostra). A filtração combinada eleva a depleção de seston para <strong>${out.depletionPct}%</strong>, ajustando o peso individual da amêijoa para <strong>${out.finalClam.toFixed(1)} g</strong> (${out.finalBiomClamKg.toFixed(1)} kg/m²).`;
+      } else if (currentStep === 4) {
+        legendBar.innerHTML = `
+          <span class="legend-item"><span class="dot" style="background:#059669"></span> <strong>Pradaria de <em>Zostera noltei</em> (g DW/m²)</strong></span>
+          <span class="legend-item"><span class="dot" style="background:#9333ea"></span> <strong>Macroalgas oportunistas <em>Ulva</em> spp. (g DW/m²)</strong></span>
+        `;
+        discoveryBox.innerHTML = out.finalUlva > out.finalZostera || out.minSummerDO < 4.2
+          ? `<strong>Interpretação Ecossistémica:</strong> Em canais com tempo de residência elevado (<strong>τ = ${p.tau.toFixed(1)} dias</strong>), a acumulação de biodepósitos e a excreção de amónia (NH₄⁺) pelos bivalves somam-se à carga externa de azoto, promovendo a dominância de <em>Ulva</em> spp. (<strong>${out.finalUlva.toFixed(0)} g DW/m²</strong>), o sombreamento de <em>Zostera noltei</em> e a queda do oxigénio noturno para <strong>${out.minSummerDO.toFixed(1)} mg/L</strong>.`
+          : `<strong>Interpretação Ecossistémica:</strong> A renovação eficiente pela maré (<strong>τ = ${p.tau.toFixed(1)} dias</strong>) dispersa os biodepósitos e o azoto regenerado, mantendo o oxigénio dissolvido noturno em <strong>${out.minSummerDO.toFixed(1)} mg/L</strong> e preservando a dominância da pradaria de <em>Zostera noltei</em> (<strong>${out.finalZostera.toFixed(0)} g DW/m²</strong>).`;
+      }
+
+      drawChart(currentStep, out);
+    }
+
+    document.querySelectorAll(".step-tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        currentStep = parseInt(btn.dataset.step, 10);
+        updateStepVisibility();
+      });
+    });
+
+    document.getElementById("prevStepBtn").addEventListener("click", () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateStepVisibility();
+      }
+    });
+
+    document.getElementById("nextStepBtn").addEventListener("click", () => {
+      if (currentStep < 4) {
+        currentStep++;
+        updateStepVisibility();
+      }
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      sliders.temp.value = 0.0;
+      sliders.tau.value = 1.5;
+      sliders.clam.value = 200;
+      sliders.oyster.value = 0;
+      sliders.nut.value = 1.0;
+      updateSimulation();
+    });
+
+    Object.values(sliders).forEach((s) => s.addEventListener("input", updateSimulation));
+    window.addEventListener("resize", updateSimulation);
+
+    updateStepVisibility();
+  </script>
+</body>
+</html>
