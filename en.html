@@ -135,6 +135,33 @@
       border-bottom: 1px solid var(--border);
     }
 
+    .powered-by {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 0.45rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    .powered-logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      background: #ffffff;
+      padding: 0.22rem 0.5rem;
+      border-radius: 0.38rem;
+      border: 1px solid var(--border-light);
+    }
+
+    .powered-logo-wrap img {
+      height: 24px;
+      width: auto;
+      display: block;
+    }
+
     .brand h1 {
       font-size: 1.25rem;
       font-weight: 700;
@@ -456,6 +483,12 @@
 
   <header>
     <div class="brand">
+      <div class="powered-by">
+        <span>Powered by</span>
+        <span class="powered-logo-wrap">
+          <img src="logo.png" alt="Tysera — Intelligence That Connects" width="84" height="24" />
+        </span>
+      </div>
       <h1 id="appTitle">Modelação Ecológica Aplicada à Ria Formosa</h1>
       <p id="appSubtitle">Caso de Estudo Progressivo: <em>Ruditapes decussatus</em>, Hidrodinâmica, Ostreicultura e Conservação</p>
     </div>
