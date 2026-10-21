@@ -707,7 +707,8 @@
           ecoTitle: "O₂ Mínimo Noturno (Verão)"
         },
         prevStep: "← Nível Anterior",
-        months: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+        months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+        xAxisLabel: "Mês",
         summerLabel: "Período Estival",
         refs: {
           minClam: "Peso comercial mínimo: 12 g (~32 mm)",
@@ -781,7 +782,8 @@
           ecoTitle: "Min. Nighttime O₂ (Summer)"
         },
         prevStep: "← Previous Level",
-        months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        months: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+        xAxisLabel: "Month",
         summerLabel: "Summer Period",
         refs: {
           minClam: "Min. commercial weight: 12 g (~32 mm)",
@@ -1012,7 +1014,7 @@
       const gridColor = dark ? "rgba(148, 163, 184, 0.14)" : "rgba(100, 116, 139, 0.15)";
       const textColor = dark ? "#94a3b8" : "#64748b";
 
-      const pad = { top: 20, right: 24, bottom: 30, left: 58 };
+      const pad = { top: 20, right: 24, bottom: 42, left: 58 };
       const plotW = w - pad.left - pad.right;
       const plotH = h - pad.top - pad.bottom;
 
@@ -1053,8 +1055,10 @@
       ctx.textAlign = "center";
       t.months.forEach((m, idx) => {
         const x = pad.left + (idx / 11) * plotW;
-        ctx.fillText(m, x, h - 8);
+        ctx.fillText(m, x, h - 22);
       });
+      ctx.font = "600 11px system-ui, sans-serif";
+      ctx.fillText(t.xAxisLabel, pad.left + plotW / 2, h - 5);
 
       // Janela de Verão (Níveis 1 a 3)
       if (step <= 3) {
@@ -1301,11 +1305,11 @@
           `;
         discoveryBox.innerHTML = isEn
           ? (p.temp >= 2.0
-              ? `<strong>Bioenergetic Interpretation:</strong> Under a <strong>+${p.temp.toFixed(1)} °C</strong> anomaly, intertidal sediment temperatures in summer exceed <strong>26.8 °C</strong>. The clam loses body mass between July and August and ends the year at <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> — falling <strong>below the minimum commercial weight (12 g)</strong>.`
-              : `<strong>Bioenergetic Interpretation:</strong> Under the baseline seasonal regime of Ria Formosa, <strong>1 individual</strong> seeded at 3.5 g (~22 mm) crosses the minimum commercial threshold (12 g) in September and reaches the optimal grade of <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> by December.`)
+              ? `<strong>Bioenergetic Interpretation:</strong> Under a <strong>+${p.temp.toFixed(1)} °C</strong> anomaly, intertidal sediment temperatures in summer exceed <strong>26.8 °C</strong>. The clam loses body mass between Months 7 and 8 and ends Month 12 at <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> — falling <strong>below the minimum commercial weight (12 g)</strong>.`
+              : `<strong>Bioenergetic Interpretation:</strong> Under the baseline seasonal regime of Ria Formosa, <strong>1 individual</strong> seeded at 3.5 g (~22 mm) crosses the minimum commercial threshold (12 g) in Month 9 and reaches the optimal grade of <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> by Month 12.`)
           : (p.temp >= 2.0
-              ? `<strong>Interpretação Bioenergética:</strong> Com uma anomalia de <strong>+${p.temp.toFixed(1)} °C</strong>, a temperatura do sedimento intertidal no verão ultrapassa <strong>26.8 °C</strong>. O indivíduo perde massa corporal entre Julho e Agosto e termina o ano com <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> — ficando <strong>abaixo do peso comercial mínimo (12 g)</strong>.`
-              : `<strong>Interpretação Bioenergética:</strong> Sob o regime térmico climatológico da Ria Formosa, <strong>1 indivíduo</strong> semeado com 3.5 g (~22 mm) ultrapassa o peso comercial mínimo (12 g) em Setembro e atinge o calibre ótimo de <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> em Dezembro.`);
+              ? `<strong>Interpretação Bioenergética:</strong> Com uma anomalia de <strong>+${p.temp.toFixed(1)} °C</strong>, a temperatura do sedimento intertidal no verão ultrapassa <strong>26.8 °C</strong>. O indivíduo perde massa corporal entre os Meses 7 e 8 e termina o Mês 12 com <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> — ficando <strong>abaixo do peso comercial mínimo (12 g)</strong>.`
+              : `<strong>Interpretação Bioenergética:</strong> Sob o regime térmico climatológico da Ria Formosa, <strong>1 indivíduo</strong> semeado com 3.5 g (~22 mm) ultrapassa o peso comercial mínimo (12 g) no Mês 9 e atinge o calibre ótimo de <strong>${out.finalClam.toFixed(1)} g (~${out.shellLengthMm} mm)</strong> no Mês 12.`);
       } else if (currentStep === 2) {
         legendBar.innerHTML = isEn
           ? `
